@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://doornote.net/2016/07/14/win32-gluttony-snake/</loc>
+    <lastmod>2016-07-15T08:46:55.863Z</lastmod>
+    <data>
+        <display>
+        <title>利用Win32Api实现的一个简单的贪食蛇游戏</title>
+        <pubTime>2016-07-14T08:21:11.000Z</pubTime>
+        
+        <tag>C/C++</tag>
+         
+        <tag>Win32Api</tag>
+         
+        <tag>Windows程序设计</tag>
+         
+         
+           
+             
+              <breadCrumb title="C/C++" url="http://doornote.net/categories/C-C/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://doornote.net/2016/07/13/java-multithreading-1/</loc>
+    <lastmod>2016-07-15T07:59:54.953Z</lastmod>
+    <data>
+        <display>
+        <title>JAVA多线程编程——生产者消费者问题(1)</title>
+        <pubTime>2016-07-13T07:54:25.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>多线程编程</tag>
+         
+        <tag>生产者消费者问题</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://doornote.net/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+</urlset>
