@@ -27,29 +27,5 @@
     </url>
 
     
-  <url>
-    <loc>http://doornote.net/2016/07/13/java-multithreading-1/</loc>
-    <lastmod>2016-07-15T07:59:54.953Z</lastmod>
-    <data>
-        <display>
-        <title>JAVA多线程编程——生产者消费者问题(1)</title>
-        <pubTime>2016-07-13T07:54:25.000Z</pubTime>
-        
-        <tag>Java</tag>
-         
-        <tag>多线程编程</tag>
-         
-        <tag>生产者消费者问题</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="http://doornote.net/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
     
 </urlset>
