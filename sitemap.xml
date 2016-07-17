@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://doornote.net/2016/07/17/java-multithreading-1/</loc>
+    
+    <lastmod>2016-07-17T05:54:23.560Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://doornote.net/2016/07/14/win32-gluttony-snake/</loc>
     
     <lastmod>2016-07-15T08:46:55.863Z</lastmod>

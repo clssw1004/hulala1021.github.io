@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://doornote.net/2016/07/17/java-multithreading-1/</loc>
+    <lastmod>2016-07-17T05:54:23.560Z</lastmod>
+    <data>
+        <display>
+        <title>JAVA多线程编程——生产者消费者模式</title>
+        <pubTime>2016-07-17T05:52:07.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>多线程编程</tag>
+         
+        <tag>生产者消费者问题</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://doornote.net/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://doornote.net/2016/07/14/win32-gluttony-snake/</loc>
     <lastmod>2016-07-15T08:46:55.863Z</lastmod>
     <data>
