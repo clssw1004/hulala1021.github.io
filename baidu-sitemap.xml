@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>http://doornote.net/2016/07/20/productivity-tool-recommend/</loc>
+    <lastmod>2016-07-20T14:44:50.413Z</lastmod>
+    <data>
+        <display>
+        <title>程序员生产力工具推荐</title>
+        <pubTime>2016-07-20T14:43:47.000Z</pubTime>
+        
+        <tag>杂谈</tag>
+         
+        <tag>程序员</tag>
+         
+         
+           
+             
+              <breadCrumb title="杂谈" url="http://doornote.net/categories/%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://doornote.net/2016/07/17/java-multithreading-1/</loc>
-    <lastmod>2016-07-19T07:32:27.726Z</lastmod>
+    <lastmod>2016-07-19T09:26:01.941Z</lastmod>
     <data>
         <display>
         <title>JAVA多线程编程——生产者消费者模式(1)</title>
