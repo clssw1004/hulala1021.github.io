@@ -9,10 +9,11 @@
       <content type="html"><![CDATA[<p><strong>本文持续更新</strong></p>
 <blockquote><h2 id="Markdown-写文档利器"><a href="#Markdown-写文档利器" class="headerlink" title="Markdown 写文档利器"></a>Markdown 写文档利器</h2><p><em>Markdown</em>是一种轻量级标记语言，创始人为约翰·格鲁伯（John Gruber）。它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML(或者HTML)文档”。[4]这种语言吸收了很多在电子邮件中已有的纯文本标记的特性。</p>
 <footer><strong>@引用来源</strong><cite><a href="https://zh.wikipedia.org/wiki/Markdown" target="_blank" rel="external">zh.wikipedia.org/wiki/Markdown</a></cite></footer></blockquote>
+<a id="more"></a>
 <ul>
 <li>Markdown语法说明：<a href="https://zh.wikipedia.org/wiki/Markdown" target="_blank" rel="external">https://zh.wikipedia.org/wiki/Markdown</a></li>
 </ul>
-<h2 id="plantuml"><a href="#plantuml" class="headerlink" title="plantuml"></a>plantuml</h2><p><em>PlantUML</em>是一个用来绘制UML图的Java类库。支持的UML图包括：时序图、用例图、类图、组件图、活动图。</p>
+<h2 id="plantuml-画流程图、类图"><a href="#plantuml-画流程图、类图" class="headerlink" title="plantuml 画流程图、类图"></a>plantuml 画流程图、类图</h2><p><em>PlantUML</em>是一个用来绘制UML图的Java类库。支持的UML图包括：时序图、用例图、类图、组件图、活动图。</p>
 <ul>
 <li><p>example:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@startuml</div><div class="line">Object &lt;|-- ArrayList</div><div class="line"></div><div class="line">Object : equals()</div><div class="line">ArrayList : Object[] elementData</div><div class="line">ArrayList : size()</div><div class="line">@enduml</div></pre></td></tr></table></figure>

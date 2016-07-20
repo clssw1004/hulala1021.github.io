@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://doornote.net/"/>
-  <updated>2016-07-20T14:54:21.388Z</updated>
+  <updated>2016-07-20T15:05:18.894Z</updated>
   <id>http://doornote.net/</id>
   
   <author>
@@ -20,15 +20,16 @@
     <link href="http://doornote.net/2016/07/20/productivity-tool-recommend/"/>
     <id>http://doornote.net/2016/07/20/productivity-tool-recommend/</id>
     <published>2016-07-20T14:43:47.000Z</published>
-    <updated>2016-07-20T14:54:21.388Z</updated>
+    <updated>2016-07-20T15:05:18.894Z</updated>
     
     <content type="html">&lt;p&gt;&lt;strong&gt;本文持续更新&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;&lt;h2 id=&quot;Markdown-写文档利器&quot;&gt;&lt;a href=&quot;#Markdown-写文档利器&quot; class=&quot;headerlink&quot; title=&quot;Markdown 写文档利器&quot;&gt;&lt;/a&gt;Markdown 写文档利器&lt;/h2&gt;&lt;p&gt;&lt;em&gt;Markdown&lt;/em&gt;是一种轻量级标记语言，创始人为约翰·格鲁伯（John Gruber）。它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML(或者HTML)文档”。[4]这种语言吸收了很多在电子邮件中已有的纯文本标记的特性。&lt;/p&gt;
 &lt;footer&gt;&lt;strong&gt;@引用来源&lt;/strong&gt;&lt;cite&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/Markdown&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;zh.wikipedia.org/wiki/Markdown&lt;/a&gt;&lt;/cite&gt;&lt;/footer&gt;&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;ul&gt;
 &lt;li&gt;Markdown语法说明：&lt;a href=&quot;https://zh.wikipedia.org/wiki/Markdown&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://zh.wikipedia.org/wiki/Markdown&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;plantuml&quot;&gt;&lt;a href=&quot;#plantuml&quot; class=&quot;headerlink&quot; title=&quot;plantuml&quot;&gt;&lt;/a&gt;plantuml&lt;/h2&gt;&lt;p&gt;&lt;em&gt;PlantUML&lt;/em&gt;是一个用来绘制UML图的Java类库。支持的UML图包括：时序图、用例图、类图、组件图、活动图。&lt;/p&gt;
+&lt;h2 id=&quot;plantuml-画流程图、类图&quot;&gt;&lt;a href=&quot;#plantuml-画流程图、类图&quot; class=&quot;headerlink&quot; title=&quot;plantuml 画流程图、类图&quot;&gt;&lt;/a&gt;plantuml 画流程图、类图&lt;/h2&gt;&lt;p&gt;&lt;em&gt;PlantUML&lt;/em&gt;是一个用来绘制UML图的Java类库。支持的UML图包括：时序图、用例图、类图、组件图、活动图。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;example:&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;@startuml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Object &amp;lt;|-- ArrayList&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Object : equals()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ArrayList : Object[] elementData&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ArrayList : size()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;@enduml&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -45,7 +46,8 @@
     <summary type="html">
     
       &lt;p&gt;&lt;strong&gt;本文持续更新&lt;/strong&gt;&lt;/p&gt;
-&lt;blockquote&gt;&lt;h2 id=&quot;Markdown-写文档利器&quot;&gt;&lt;a href=&quot;#Markdown-写文档利器&quot; class=&quot;headerlink&quot; title=&quot;Markdown 写文档利器&quot;&gt;&lt;/a&gt;M
+&lt;blockquote&gt;&lt;h2 id=&quot;Markdown-写文档利器&quot;&gt;&lt;a href=&quot;#Markdown-写文档利器&quot; class=&quot;headerlink&quot; title=&quot;Markdown 写文档利器&quot;&gt;&lt;/a&gt;Markdown 写文档利器&lt;/h2&gt;&lt;p&gt;&lt;em&gt;Markdown&lt;/em&gt;是一种轻量级标记语言，创始人为约翰·格鲁伯（John Gruber）。它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML(或者HTML)文档”。[4]这种语言吸收了很多在电子邮件中已有的纯文本标记的特性。&lt;/p&gt;
+&lt;footer&gt;&lt;strong&gt;@引用来源&lt;/strong&gt;&lt;cite&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/Markdown&quot;&gt;zh.wikipedia.org/wiki/Markdown&lt;/a&gt;&lt;/cite&gt;&lt;/footer&gt;&lt;/blockquote&gt;
     
     </summary>
     
