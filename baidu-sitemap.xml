@@ -4,21 +4,43 @@
 
     
   <url>
+    <loc>http://doornote.net/2016/07/22/mess-file/</loc>
+    <lastmod>2016-07-22T15:10:22.676Z</lastmod>
+    <data>
+        <display>
+        <title>文件混淆工具</title>
+        <pubTime>2016-07-22T14:17:00.000Z</pubTime>
+        
+        <tag>C#</tag>
+         
+        <tag>生产力</tag>
+         
+         
+           
+             
+              <breadCrumb title="C#" url="http://doornote.net/categories/C/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://doornote.net/2016/07/20/productivity-tool-recommend/</loc>
-    <lastmod>2016-07-20T15:06:46.674Z</lastmod>
+    <lastmod>2016-07-22T14:21:40.547Z</lastmod>
     <data>
         <display>
         <title>程序员生产力工具推荐</title>
         <pubTime>2016-07-20T14:43:47.000Z</pubTime>
         
-        <tag>杂谈</tag>
+        <tag>生产力</tag>
          
         <tag>程序员</tag>
          
          
            
              
-              <breadCrumb title="杂谈" url="http://doornote.net/categories/%E6%9D%82%E8%B0%88/"/>
+              <breadCrumb title="生产力" url="http://doornote.net/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/"/>
           
         </display>
     </data>
