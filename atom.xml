@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://doornote.net/"/>
-  <updated>2016-07-22T15:10:22.676Z</updated>
+  <updated>2016-07-23T02:54:59.893Z</updated>
   <id>http://doornote.net/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://doornote.net/2016/07/22/mess-file/"/>
     <id>http://doornote.net/2016/07/22/mess-file/</id>
     <published>2016-07-22T14:17:00.000Z</published>
-    <updated>2016-07-22T15:10:22.676Z</updated>
+    <updated>2016-07-23T02:54:59.893Z</updated>
     
     <content type="html">&lt;h2 id=&quot;功能一：混淆文件（目前仅实现该功能）&quot;&gt;&lt;a href=&quot;#功能一：混淆文件（目前仅实现该功能）&quot; class=&quot;headerlink&quot; title=&quot;功能一：混淆文件（目前仅实现该功能）&quot;&gt;&lt;/a&gt;功能一：混淆文件（目前仅实现该功能）&lt;/h2&gt;&lt;p&gt;  我们在上传文件到某网盘时，有时会因为文件内容违规，不让上传，或者是以前上传的文件，但现在不让下载了；&lt;/p&gt;
 &lt;p&gt;  本工具作用是打乱文件字节顺序，与文件名，让网盘无法识别文件内容，以实现正常的上传下载。转换后文件组成部分为：文件名4k + 文件数据。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;&lt;strong&gt;注:该工具一定意义上有加密作用，但不建议依赖其功能做加密用&lt;/strong&gt;&lt;/p&gt;
@@ -37,7 +37,18 @@
 &lt;p&gt;dirName为文件夹全路径，后面两个参数同上&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;最新版本二进制文件下载&quot;&gt;&lt;a href=&quot;#最新版本二进制文件下载&quot; class=&quot;headerlink&quot; title=&quot;最新版本二进制文件下载&quot;&gt;&lt;/a&gt;最新版本二进制文件下载&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/hulala1021/file-tool/releases&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/hulala1021/file-tool/releases&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;窗口工具使用&quot;&gt;&lt;a href=&quot;#窗口工具使用&quot; class=&quot;headerlink&quot; title=&quot;窗口工具使用&quot;&gt;&lt;/a&gt;窗口工具使用&lt;/h2&gt;&lt;p&gt;如果你没有C#开发并想要直接使用本工具，这里提供了编译好的二进制运行文件，本工具界面使用Winform开发：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;下载地址 &lt;strong&gt;&lt;a href=&quot;https://github.com/hulala1021/file-tool/releases&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/hulala1021/file-tool/releases&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;运行后界面如下：&lt;/p&gt;
+&lt;img src=&quot;/2016/07/22/mess-file/mess-tool-gui.PNG&quot; alt=&quot;界面&quot; title=&quot;界面&quot;&gt;
+&lt;p&gt;可见界面中已经封装好以上API的操作了，可直接点击运行使用；&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;常见问题&quot;&gt;&lt;a href=&quot;#常见问题&quot; class=&quot;headerlink&quot; title=&quot;常见问题&quot;&gt;&lt;/a&gt;常见问题&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;问题：&lt;/strong&gt;如果我不小心把一个文件打乱两次怎么办：&lt;br&gt;&lt;strong&gt;解决方案：&lt;/strong&gt;这个很简单，进行两次恢复操作就可以了。&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&quot;Github项目地址&quot;&gt;&lt;a href=&quot;#Github项目地址&quot; class=&quot;headerlink&quot; title=&quot;Github项目地址&quot;&gt;&lt;/a&gt;Github项目地址&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/hulala1021/file-tool&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/hulala1021/file-tool&lt;/a&gt;&lt;br&gt;&amp;ensp;&lt;br&gt;&lt;div style=&quot;text-align:center&quot;&gt;
   &lt;div class=&quot;github-card&quot; data-user=&quot;hulala1021&quot; data-repo=&quot;file-tool&quot; data-width=&quot;400&quot; data-theme=&quot;default&quot; data-target=&quot;&quot; data-client-id=&quot;&quot; data-client-secret=&quot;&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;

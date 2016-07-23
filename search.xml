@@ -21,7 +21,18 @@
 <p>dirName为文件夹全路径，后面两个参数同上</p>
 </li>
 </ul>
-<h2 id="最新版本二进制文件下载"><a href="#最新版本二进制文件下载" class="headerlink" title="最新版本二进制文件下载"></a>最新版本二进制文件下载</h2><p><strong><a href="https://github.com/hulala1021/file-tool/releases" target="_blank" rel="external">https://github.com/hulala1021/file-tool/releases</a></strong></p>
+<h2 id="窗口工具使用"><a href="#窗口工具使用" class="headerlink" title="窗口工具使用"></a>窗口工具使用</h2><p>如果你没有C#开发并想要直接使用本工具，这里提供了编译好的二进制运行文件，本工具界面使用Winform开发：</p>
+<ul>
+<li><p>下载地址 <strong><a href="https://github.com/hulala1021/file-tool/releases" target="_blank" rel="external">https://github.com/hulala1021/file-tool/releases</a></strong></p>
+</li>
+<li><p>运行后界面如下：</p>
+<img src="/2016/07/22/mess-file/mess-tool-gui.PNG" alt="界面" title="界面">
+<p>可见界面中已经封装好以上API的操作了，可直接点击运行使用；</p>
+</li>
+</ul>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><ul>
+<li><strong>问题：</strong>如果我不小心把一个文件打乱两次怎么办：<br><strong>解决方案：</strong>这个很简单，进行两次恢复操作就可以了。</li>
+</ul>
 <h2 id="Github项目地址"><a href="#Github项目地址" class="headerlink" title="Github项目地址"></a>Github项目地址</h2><p><a href="https://github.com/hulala1021/file-tool" target="_blank" rel="external">https://github.com/hulala1021/file-tool</a><br>&ensp;<br><div style="text-align:center">
   <div class="github-card" data-user="hulala1021" data-repo="file-tool" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
 </div>
