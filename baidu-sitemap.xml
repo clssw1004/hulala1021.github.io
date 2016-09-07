@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://doornote.net/2016/09/07/surplus-steam-keys/</loc>
+    <lastmod>2016-09-07T04:04:39.459Z</lastmod>
+    <data>
+        <display>
+        <title>多余的Steam Key</title>
+        <pubTime>2016-09-07T03:43:15.000Z</pubTime>
+        
+        <tag>steam</tag>
+         
+        <tag>Humble Bundle</tag>
+         
+        <tag>Games</tag>
+         
+         
+           
+             
+              <breadCrumb title="其它" url="http://doornote.net/categories/%E5%85%B6%E5%AE%83/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://doornote.net/2016/07/22/mess-file/</loc>
     <lastmod>2016-07-23T02:54:59.893Z</lastmod>
     <data>
@@ -11,9 +35,9 @@
         <title>文件混淆工具</title>
         <pubTime>2016-07-22T14:17:00.000Z</pubTime>
         
-        <tag>C#</tag>
-         
         <tag>生产力</tag>
+         
+        <tag>C#</tag>
          
          
            
