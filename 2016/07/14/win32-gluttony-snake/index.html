@@ -1,1 +1,878 @@
-<!doctype html><html class="theme-next pisces use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="C/C++,Win32Api,Windows程序设计,"><link rel="alternate" href="/atom.xml" title="hulala1021's 博客" type="application/atom+xml"><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.0.1"><meta name="description" content="这是大学时期写的代码，当时看Windows程序设计(第5版)学习利用Win32Api编程，当时还没毕业，课程讲到Winform编程，便想通过对Win32Api的学习多了解Winform的一些比较底层实现。"><meta property="og:type" content="article"><meta property="og:title" content="利用Win32Api实现的一个简单的贪食蛇游戏"><meta property="og:url" content="http://doornote.net/2016/07/14/win32-gluttony-snake/index.html"><meta property="og:site_name" content="hulala1021's 博客"><meta property="og:description" content="这是大学时期写的代码，当时看Windows程序设计(第5版)学习利用Win32Api编程，当时还没毕业，课程讲到Winform编程，便想通过对Win32Api的学习多了解Winform的一些比较底层实现。"><meta property="og:image" content="http://doornote.net/2016/07/14/win32-gluttony-snake/1-1.PNG"><meta property="og:updated_time" content="2016-07-18T12:09:28.917Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="利用Win32Api实现的一个简单的贪食蛇游戏"><meta name="twitter:description" content="这是大学时期写的代码，当时看Windows程序设计(第5版)学习利用Win32Api编程，当时还没毕业，课程讲到Winform编程，便想通过对Win32Api的学习多了解Winform的一些比较底层实现。"><meta name="twitter:image" content="http://doornote.net/2016/07/14/win32-gluttony-snake/1-1.PNG"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Pisces",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}};</script><link rel="canonical" href="http://doornote.net/2016/07/14/win32-gluttony-snake/"><title>利用Win32Api实现的一个简单的贪食蛇游戏 | hulala1021's 博客</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div style="display: none"><script src="//s6.cnzz.com/stat.php?id=1259906155&web_id=1259906155" type="text/javascript"></script></div><div class="container one-collumn sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">hulala1021's 博客</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">coder,steamer,sleeper....</p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup"><span class="search-icon fa fa-search"></span> <input type="text" id="local-search-input"><div id="local-search-result"></div><span class="popup-btn-close">close</span></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline">利用Win32Api实现的一个简单的贪食蛇游戏</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-07-14T16:21:11+08:00" content="2016-07-14">2016-07-14</time></span> <span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a></span></span> <span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/07/14/win32-gluttony-snake/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/07/14/win32-gluttony-snake/" itemprop="commentsCount"></span></a></span> &nbsp; | &nbsp; <span class="page-pv"><i class="fa fa-file-o"></i> <span class="busuanzi-value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body" itemprop="articleBody"><p>这是大学时期写的代码，当时看<a href="https://www.amazon.cn/Windows%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-%E4%BD%A9%E6%8E%AA%E5%B0%94%E5%BE%B7/dp/B00426BTC6/ref=sr_1_2?ie=UTF8&amp;qid=1468484710&amp;sr=8-2&amp;keywords=windows%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1" target="_blank" rel="external">Windows程序设计(第5版)</a>学习利用Win32Api编程，当时还没毕业，课程讲到Winform编程，便想通过对Win32Api的学习多了解Winform的一些比较底层实现。<br><a id="more"></a><br>废话不多说，直接上代码：<br><figure class="highlight c"><figcaption><span>贪食蛇游戏++</span><a href="/downloads/code/cpp/gluttonysnake.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/******************************************************************</span></div><div class="line">		贪食蛇 Preview</div><div class="line">		此版本贪吃蛇用蛇的方块是集合用的是数组</div><div class="line">		蛇移动是以Sleep()阻断进程实现的</div><div class="line">		故蛇移动看似较为卡顿，且数组插入数据效率较低，</div><div class="line">		故操作体验十分一般</div><div class="line">*******************************************************************/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;windows.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"winmm.lib"</span>)</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> LENGTH 40					<span class="comment">//游戏场地的宽</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WIDTH 10					<span class="comment">//组成蛇的的正方形的边长</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> RANGE 50					<span class="comment">//游戏场地与客户去之间间隔</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SNAKE_COLOR RGB(255,0,0)	  <span class="comment">//蛇的颜色</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> BK_COLOR	RGB(204,232,207)  <span class="comment">//窗体背景色</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> NO_SNAKE 0</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> HAS_SNAKE 1</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> STEP 2</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAKECOOR(x) (x)*WIDTH		<span class="comment">//把flags数组的下标映射为坐标</span></span></div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></div><div class="line">{</div><div class="line">	<span class="keyword">int</span> x;</div><div class="line">	<span class="keyword">int</span> y;</div><div class="line">	<span class="keyword">int</span> flag;</div><div class="line">} GRID;<span class="comment">//蛇的结构</span></div><div class="line"></div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WndProc</span><span class="params">(HWND,UINT,WPARAM,LPARAM)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakePartSnake</span><span class="params">(<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">int</span>,GRID *)</span></span>;	<span class="comment">//为蛇身增加或设置一个方块</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MoveSnake</span><span class="params">(HWND)</span></span>;				<span class="comment">//移动蛇</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakeFood</span><span class="params">(GRID *food)</span></span>;			<span class="comment">//制造随机方块</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">initializer</span><span class="params">()</span></span>;				<span class="comment">//初始化游戏</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Manager</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">TCHAR szAppName[] = TEXT(<span class="string">"Gluttony Snake"</span>);</div><div class="line"><span class="keyword">int</span> flags[LENGTH][LENGTH];	<span class="comment">//游戏区域所有方块的状态标记</span></div><div class="line">RECT playground;		<span class="comment">//游戏场地</span></div><div class="line">GRID *snake = <span class="literal">NULL</span>;	<span class="comment">//蛇所在位置数组</span></div><div class="line">GRID *food = <span class="literal">NULL</span>;	<span class="comment">//食物对象</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> MAX_LENGTH = <span class="number">0</span>;<span class="comment">//默认蛇分配的最大长度（可变的）</span></div><div class="line"><span class="keyword">int</span> snake_len = <span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> direct = <span class="number">0</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">WinMain</span><span class="params">(HINSTANCE hInstance,</span></span></div><div class="line">				   HINSTANCE hPrevInstance,</div><div class="line">				   PSTR szCmdLine,</div><div class="line">				   <span class="keyword">int</span> iCmdShow)</div><div class="line">{</div><div class="line">	MSG msg;</div><div class="line">	HWND hwnd;</div><div class="line">	WNDCLASS wndclass;</div><div class="line">	<span class="keyword">while</span>(TRUE)</div><div class="line">	{</div><div class="line">		wndclass.cbClsExtra = <span class="number">0</span>;</div><div class="line">		wndclass.cbWndExtra = <span class="number">0</span>;</div><div class="line">		wndclass.hbrBackground=CreateSolidBrush(RGB(<span class="number">203</span>,<span class="number">202</span>,<span class="number">201</span>));</div><div class="line">		wndclass.hIcon = LoadIcon(<span class="literal">NULL</span>,IDI_APPLICATION);</div><div class="line">		wndclass.hCursor = LoadCursor(<span class="literal">NULL</span>,IDC_ARROW);</div><div class="line">		wndclass.hInstance = hInstance;</div><div class="line">		wndclass.lpfnWndProc = WndProc;</div><div class="line">		wndclass.lpszMenuName = <span class="literal">NULL</span>;</div><div class="line">		wndclass.lpszClassName = szAppName;</div><div class="line">		wndclass.style = CS_VREDRAW | CS_HREDRAW;</div><div class="line">		</div><div class="line">		<span class="keyword">if</span>(!RegisterClass(&amp;wndclass))</div><div class="line">		{</div><div class="line">			MessageBox(<span class="literal">NULL</span>,TEXT(<span class="string">"Register class failed!! Retry??"</span>),szAppName,<span class="number">0</span>);</div><div class="line">			<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">		}</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	}</div><div class="line">	hwnd = CreateWindow(szAppName,</div><div class="line">			TEXT(<span class="string">"Gluttony Snake Preview V1.0.1"</span>),</div><div class="line">			WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME ^ WS_MINIMIZEBOX ^ WS_MAXIMIZEBOX,</div><div class="line">			CW_USEDEFAULT,</div><div class="line">			CW_USEDEFAULT,</div><div class="line">			CW_USEDEFAULT,</div><div class="line">			CW_USEDEFAULT,</div><div class="line">			<span class="literal">NULL</span>,<span class="literal">NULL</span>,</div><div class="line">			hInstance,</div><div class="line">			<span class="literal">NULL</span>);</div><div class="line"></div><div class="line">	ShowWindow(hwnd,SW_NORMAL);</div><div class="line">	UpdateWindow(hwnd);</div><div class="line">	<span class="keyword">while</span>(TRUE)</div><div class="line">	{</div><div class="line">		<span class="keyword">if</span>(PeekMessage(&amp;msg,<span class="literal">NULL</span>,<span class="number">0</span>,<span class="number">0</span>,PM_REMOVE))</div><div class="line">		{</div><div class="line">			<span class="keyword">if</span>(msg.message == WM_QUIT)</div><div class="line">				<span class="keyword">break</span>;</div><div class="line">			TranslateMessage(&amp;msg);</div><div class="line">			DispatchMessage(&amp;msg);</div><div class="line">		}</div><div class="line">		<span class="keyword">else</span></div><div class="line">		{</div><div class="line">			MoveSnake(hwnd);</div><div class="line">		}</div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> msg.wParam;</div><div class="line">}</div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WndProc</span><span class="params">(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)</span></span></div><div class="line">{</div><div class="line">	HDC hdc;</div><div class="line">	PAINTSTRUCT ps;</div><div class="line">	HBRUSH hBrush;</div><div class="line">	<span class="keyword">switch</span>(message)</div><div class="line">	{</div><div class="line">	<span class="keyword">case</span> WM_DESTROY:</div><div class="line">		PostQuitMessage(<span class="number">0</span>);</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="keyword">case</span> WM_CREATE:</div><div class="line">		<span class="comment">//PlaySound(TEXT("HG.wav"),NULL ,SND_ASYNC | SND_LOOP);//播放游戏音乐；</span></div><div class="line">		initializer();</div><div class="line">			MoveWindow(hwnd,</div><div class="line">			RANGE * <span class="number">2</span>,</div><div class="line">			RANGE * <span class="number">2</span>,</div><div class="line">			WIDTH * LENGTH + RANGE * <span class="number">3</span>,</div><div class="line">			WIDTH * LENGTH + RANGE * <span class="number">3</span>,</div><div class="line">			TRUE);</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	<span class="keyword">case</span> WM_KEYDOWN:</div><div class="line">		<span class="keyword">switch</span>(wParam)</div><div class="line">		{</div><div class="line">		<span class="keyword">case</span> VK_LEFT:</div><div class="line">			<span class="keyword">if</span>(direct != VK_RIGHT)</div><div class="line">				direct = VK_LEFT;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> VK_RIGHT:</div><div class="line">			<span class="keyword">if</span>(direct != VK_LEFT)</div><div class="line">				direct = VK_RIGHT;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> VK_UP:</div><div class="line">			<span class="keyword">if</span>(direct != VK_DOWN)</div><div class="line">				direct = VK_UP;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> VK_DOWN:</div><div class="line">			<span class="keyword">if</span>(direct != VK_UP)</div><div class="line">				direct = VK_DOWN;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">default</span>:</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		}</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="keyword">case</span> WM_PAINT:</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != snake_len; ++i)</div><div class="line">		{</div><div class="line">			flags[(snake + i)-&gt;x][(snake + i)-&gt;y] = (snake + i)-&gt;flag;</div><div class="line">		}</div><div class="line">		hdc = BeginPaint(hwnd,&amp;ps);</div><div class="line">		SetViewportOrgEx(hdc,RANGE/<span class="number">2</span>,RANGE,<span class="literal">NULL</span>);</div><div class="line">		hBrush = CreateSolidBrush(BK_COLOR);</div><div class="line">		SelectObject(hdc,hBrush);</div><div class="line">		Rectangle(hdc,</div><div class="line">			playground.left,</div><div class="line">			playground.top,</div><div class="line">			playground.right,</div><div class="line">			playground.bottom);</div><div class="line">		DeleteObject(hBrush);</div><div class="line">		hBrush = CreateSolidBrush(SNAKE_COLOR);</div><div class="line">		SelectObject(hdc,hBrush);</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != LENGTH;++i)</div><div class="line">		{</div><div class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j != LENGTH;++j)</div><div class="line">			{</div><div class="line">				<span class="keyword">if</span>(flags[i][j] == HAS_SNAKE)</div><div class="line">				{</div><div class="line">					Rectangle(hdc,</div><div class="line">						MAKECOOR(i),</div><div class="line">						MAKECOOR(j),</div><div class="line">						MAKECOOR(i+<span class="number">1</span>),</div><div class="line">						MAKECOOR(j+<span class="number">1</span>));</div><div class="line">				}</div><div class="line">			}</div><div class="line">		}</div><div class="line">		DeleteObject(hBrush);</div><div class="line">		EndPaint(hwnd,&amp;ps);</div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> DefWindowProc(hwnd,message,wParam,lParam);</div><div class="line">}</div><div class="line"><span class="comment">//初始化游戏各个参数</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">initializer</span><span class="params">()</span></span></div><div class="line">{</div><div class="line">	<span class="keyword">if</span>(snake != <span class="literal">NULL</span>)</div><div class="line">		<span class="built_in">free</span>(snake);</div><div class="line">	<span class="keyword">if</span>(food != <span class="literal">NULL</span>)</div><div class="line">		<span class="built_in">free</span>(food);</div><div class="line">	snake_len = <span class="number">3</span>;		<span class="comment">//蛇的初始长度为3</span></div><div class="line">	direct = VK_RIGHT;	<span class="comment">//蛇的初始方向为向右</span></div><div class="line">	MAX_LENGTH = <span class="number">100</span>;	<span class="comment">//蛇默认最初分配最大长度为20</span></div><div class="line">	food = (GRID *)<span class="built_in">calloc</span>(<span class="number">1</span>,<span class="keyword">sizeof</span>(GRID));<span class="comment">//分配储存food的内存</span></div><div class="line">	snake = (GRID *)<span class="built_in">calloc</span>(MAX_LENGTH,<span class="keyword">sizeof</span>(GRID));<span class="comment">//分配储存蛇的内存</span></div><div class="line">	<span class="comment">/*************初始化游戏场地*******************/</span></div><div class="line">	playground.left = <span class="number">0</span>;</div><div class="line">	playground.top = <span class="number">0</span>;</div><div class="line">	playground.right = WIDTH * LENGTH;</div><div class="line">	playground.bottom = WIDTH * LENGTH;</div><div class="line">	<span class="comment">/**************初始化游戏场地********************/</span></div><div class="line"></div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ;i &lt; LENGTH;++i)</div><div class="line">	{</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; LENGTH;++j)</div><div class="line">		{</div><div class="line">			flags[i][j] = NO_SNAKE;</div><div class="line">		}</div><div class="line">	}</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != snake_len;++i)</div><div class="line">	{</div><div class="line">		MakePartSnake(LENGTH / <span class="number">2</span> + <span class="number">2</span> - i,LENGTH / <span class="number">2</span>,HAS_SNAKE,(snake + i));</div><div class="line">	}<span class="comment">///初始化蛇</span></div><div class="line">	MakeFood(food);<span class="comment">///产生food</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakePartSnake</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> flag,GRID * snake)</span></span></div><div class="line">{</div><div class="line">	snake-&gt;x = x;</div><div class="line">	snake-&gt;y = y;</div><div class="line">	snake-&gt;flag = flag;</div><div class="line">}</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//控制蛇的移动</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MoveSnake</span><span class="params">(HWND hwnd)</span></span></div><div class="line">{</div><div class="line">	Manager();</div><div class="line">	<span class="comment">//把蛇的尾部去除（表现为蛇移动一格）</span></div><div class="line">	flags[(snake + snake_len - <span class="number">1</span>)-&gt;x][(snake + snake_len - <span class="number">1</span>)-&gt;y] = NO_SNAKE;</div><div class="line"></div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = snake_len - <span class="number">1</span>; i &gt; <span class="number">0</span>;--i)</div><div class="line">	{</div><div class="line">		(snake+i)-&gt;x = (snake + i <span class="number">-1</span>)-&gt;x;</div><div class="line">		(snake+i)-&gt;y = (snake + i <span class="number">-1</span>)-&gt;y;</div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(direct == VK_LEFT)</div><div class="line">	{</div><div class="line">		snake-&gt;x -= <span class="number">1</span>;</div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(direct == VK_RIGHT)</div><div class="line">	{</div><div class="line">		snake-&gt;x += <span class="number">1</span>;</div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(direct == VK_UP)</div><div class="line">	{</div><div class="line">		snake-&gt;y -= <span class="number">1</span>;</div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(direct == VK_DOWN)</div><div class="line">	{</div><div class="line">		snake-&gt;y += <span class="number">1</span>;</div><div class="line">	}</div><div class="line">	InvalidateRect(hwnd,<span class="literal">NULL</span>,FALSE);</div><div class="line">	Sleep(<span class="number">200</span>);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//通过随机生成food</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakeFood</span><span class="params">(GRID *food)</span></span></div><div class="line">{</div><div class="line">	srand((<span class="keyword">unsigned</span>) time(<span class="literal">NULL</span>));</div><div class="line">	food-&gt;x = rand() % LENGTH;</div><div class="line">	food-&gt;y = rand() % LENGTH;</div><div class="line">	food-&gt;flag = HAS_SNAKE;</div><div class="line">	flags[food-&gt;x][food-&gt;y] = food-&gt;flag;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//游戏规则的映射及内存的处理</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Manager</span><span class="params">()</span></span></div><div class="line">{</div><div class="line">	<span class="keyword">if</span>(snake_len &gt;= MAX_LENGTH - <span class="number">2</span>)</div><div class="line">	{</div><div class="line">		MAX_LENGTH += STEP;</div><div class="line">		snake = (GRID *)<span class="built_in">realloc</span>(snake,MAX_LENGTH * <span class="keyword">sizeof</span>(GRID));</div><div class="line">	}<span class="comment">//若蛇的长度数组snake将超过所分配的内存就再次扩充分配</span></div><div class="line"></div><div class="line">	<span class="keyword">if</span>(snake-&gt;x &lt; <span class="number">0</span> || snake-&gt;x &gt;= LENGTH || snake-&gt;y &lt; <span class="number">0</span> || snake-&gt;y &gt;= LENGTH)</div><div class="line">	{</div><div class="line">		MessageBox(<span class="literal">NULL</span>,TEXT(<span class="string">"Game Over!!"</span>),szAppName,<span class="number">0</span>);</div><div class="line">		initializer();</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	}<span class="comment">///判断蛇是否碰到边界</span></div><div class="line"></div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">4</span>;i &lt; snake_len;++i)</div><div class="line">	{</div><div class="line">		<span class="keyword">if</span>(snake-&gt;x == (snake + i)-&gt;x &amp;&amp; snake-&gt;y == (snake + i)-&gt;y)</div><div class="line">		{</div><div class="line">			MessageBox(<span class="literal">NULL</span>,TEXT(<span class="string">"Game Over!!"</span>),szAppName,<span class="number">0</span>);</div><div class="line">			initializer();</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		}</div><div class="line">	}<span class="comment">////判断蛇是否碰到自身</span></div><div class="line"></div><div class="line">	<span class="keyword">if</span>(food-&gt;x == snake-&gt;x &amp;&amp; food-&gt;y == snake-&gt;y)</div><div class="line">	{</div><div class="line">		MakePartSnake(</div><div class="line">					(snake + snake_len - <span class="number">1</span>)-&gt;x</div><div class="line">					,(snake + snake_len - <span class="number">1</span>)-&gt;y</div><div class="line">					,HAS_SNAKE</div><div class="line">					,snake + snake_len</div><div class="line">					);</div><div class="line">		++snake_len;</div><div class="line">		MakeFood(food);</div><div class="line">	}<span class="comment">///判断蛇是否吃到food</span></div><div class="line">}</div></pre></td></tr></table></figure><br>代码在VS2010下编译运行(<em>我使用的开发环境，VS其它版本也可以</em>)，可见游戏界面如下：<br><img src="/2016/07/14/win32-gluttony-snake/1-1.PNG" alt="贪食蛇游戏界面" title="贪食蛇游戏界面"><br>&ensp;<br>以上代码未考虑通关情况，也就是如果水平够高蛇会把格子占满，然后Game over。<br><strong>注:</strong> 若在编译时报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">error LNK2019: 无法解析的外部符号 _main，该符号在函数 ___tmainCRTStart</div></pre></td></tr></table></figure></p><p>可按以下方法解决：</p><ul><li>右键点击–&gt;项目，选择–&gt;属性，属性页 窗口弹出；</li><li>接着，点击连接器-&gt;系统，在右侧会看到“子系统”选项，将选项改为<strong>/subsystem:windows</strong>.</li></ul><p>最后附上Github项目地址：<em><a href="https://github.com/hulala1021/gluttonysnake" target="_blank" rel="external">gluttonysnake</a></em><br><div style="text-align:center"><div class="github-card" data-user="hulala1021" data-repo="gluttonysnake" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div></div><script src="/github-card-lib/githubcard.js"></script></p><p>本文永久链接： <a href="http://doornote.net/2016/07/14/win32-gluttony-snake/">http://doornote.net/2016/07/14/win32-gluttony-snake/</a> ；欢迎转载。</p></div><div></div><div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/C-C/" rel="tag">#C/C++</a> <a href="/tags/Win32Api/" rel="tag">#Win32Api</a> <a href="/tags/Windows程序设计/" rel="tag">#Windows程序设计</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"></div><div class="post-nav-prev post-nav-item"><a href="/2016/07/17/java-multithreading-1/" rel="prev" title="JAVA多线程编程——生产者消费者模式(1)">JAVA多线程编程——生产者消费者模式(1) <i class="fa fa-chevron-right"></i></a></div></div></footer></article><div class="post-spread"><div class="jiathis_style"><a class="jiathis_button_tsina"></a> <a class="jiathis_button_tqq"></a> <a class="jiathis_button_weixin"></a> <a class="jiathis_button_cqq"></a> <a class="jiathis_button_douban"></a> <a class="jiathis_button_renren"></a> <a class="jiathis_button_qzone"></a> <a class="jiathis_button_kaixin001"></a> <a class="jiathis_button_copy"></a> <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a> <a class="jiathis_counter_style"></a></div><script type="text/javascript">var jiathis_config={hideMore:!1};</script><script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script></div></div></div><div class="comments" id="comments"><div class="ds-thread" data-thread-key="2016/07/14/win32-gluttony-snake/" data-title="利用Win32Api实现的一个简单的贪食蛇游戏" data-url="http://doornote.net/2016/07/14/win32-gluttony-snake/"></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview">站点概览</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="hulala1021"><p class="site-author-name" itemprop="name">hulala1021</p><p class="site-description motion-element" itemprop="description">寻求简洁自然的编程方式。。。</p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">5</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">5</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">12</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/hulala1021" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i> GitHub</a></span> <span class="links-of-author-item"><a href="http://steamcommunity.com/id/hulala1021/" target="_blank" title="Steam"><i class="fa fa-fw fa-steam-square"></i> Steam</a></span></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><p class="post-toc-empty">此文章未包含目录</p></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; <span itemprop="copyrightYear">2016</span> <span class="with-love"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">hulala1021</span></div><div class="powered-by">由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动</div><div class="theme-info">主题 - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span> <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null);</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var duoshuoQuery={short_name:"hulala1021"};!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.id="duoshuo-script",t.src=("https:"==document.location.protocol?"https:":"http:")+"//static.duoshuo.com/embed.js",t.charset="UTF-8",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(t)}();</script><script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script><script src="/js/src/hook-duoshuo.js"></script><script type="text/javascript">function proceedsearch(){$("body").append('<div class="popoverlay">').css("overflow","hidden"),$(".popup").toggle()}var isfetched=!1,search_path="search.xml";0==search_path.length&&(search_path="search.xml");var path="/"+search_path,searchFunc=function(e,t,a){"use strict";$.ajax({url:e,dataType:"xml",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var r=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),c=document.getElementById(t),s=document.getElementById(a);c.addEventListener("input",function(){var e=0,t='<ul class="search-result-list">',a=this.value.trim().toLowerCase().split(/[\s\-]+/);s.innerHTML="",this.value.trim().length>1&&r.forEach(function(r){var c=!0,s=r.title.trim().toLowerCase(),n=r.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),i=r.url,o=-1,l=-1,p=-1;if(""!=s&&""!=n&&a.forEach(function(e,t){o=s.indexOf(e),l=n.indexOf(e),0>o&&0>l?c=!1:(0>l&&(l=0),0==t&&(p=l))}),c){e+=1,t+="<li><a href='"+i+"' class='search-result-title'>"+s+"</a>";var h=r.content.trim().replace(/<[^>]+>/g,"");if(p>=0){var u=p-20,d=p+80;0>u&&(u=0),0==u&&(d=50),d>h.length&&(d=h.length);var f=h.substring(u,d);a.forEach(function(e){var t=new RegExp(e,"gi");f=f.replace(t,'<b class="search-keyword">'+e+"</b>")}),t+='<p class="search-result">'+f+"...</p>"}t+="</li>"}}),t+="</ul>",0==e&&(t='<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'),""==a&&(t='<div id="no-result"><i class="fa fa-search fa-5x" /></div>'),s.innerHTML=t}),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),0==isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(function(e){$(".popup").hide(),$(".popoverlay").remove(),$("body").css("overflow","")}),$(".popup").click(function(e){e.stopPropagation()});</script></body></html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C/C++,Win32Api,Windows程序设计," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="崔伟的个人博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="这是大学时期写的代码，当时看Windows程序设计(第5版)学习利用Win32Api编程，当时还没毕业，课程讲到Winform编程，便想通过对Win32Api的学习多了解Winform的一些比较底层实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Win32Api实现的一个简单的贪食蛇游戏">
+<meta property="og:url" content="http://doornote.net/2016/07/14/win32-gluttony-snake/index.html">
+<meta property="og:site_name" content="崔伟的个人博客">
+<meta property="og:description" content="这是大学时期写的代码，当时看Windows程序设计(第5版)学习利用Win32Api编程，当时还没毕业，课程讲到Winform编程，便想通过对Win32Api的学习多了解Winform的一些比较底层实现。">
+<meta property="og:image" content="http://doornote.net/2016/07/14/win32-gluttony-snake/1-1.PNG">
+<meta property="og:updated_time" content="2016-07-18T12:09:28.917Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用Win32Api实现的一个简单的贪食蛇游戏">
+<meta name="twitter:description" content="这是大学时期写的代码，当时看Windows程序设计(第5版)学习利用Win32Api编程，当时还没毕业，课程讲到Winform编程，便想通过对Win32Api的学习多了解Winform的一些比较底层实现。">
+<meta name="twitter:image" content="http://doornote.net/2016/07/14/win32-gluttony-snake/1-1.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://doornote.net/2016/07/14/win32-gluttony-snake/"/>
+
+  <title> 利用Win32Api实现的一个简单的贪食蛇游戏 | 崔伟的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s6.cnzz.com/stat.php?id=1259906155&web_id=1259906155" type="text/javascript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">崔伟的个人博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">coder,steamer,sleeper....</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                利用Win32Api实现的一个简单的贪食蛇游戏
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-14T16:21:11+08:00" content="2016-07-14">
+              2016-07-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/14/win32-gluttony-snake/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/14/win32-gluttony-snake/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这是大学时期写的代码，当时看<a href="https://www.amazon.cn/Windows%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-%E4%BD%A9%E6%8E%AA%E5%B0%94%E5%BE%B7/dp/B00426BTC6/ref=sr_1_2?ie=UTF8&amp;qid=1468484710&amp;sr=8-2&amp;keywords=windows%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1" target="_blank" rel="external">Windows程序设计(第5版)</a>学习利用Win32Api编程，当时还没毕业，课程讲到Winform编程，便想通过对Win32Api的学习多了解Winform的一些比较底层实现。<br><a id="more"></a><br>废话不多说，直接上代码：<br><figure class="highlight c"><figcaption><span>贪食蛇游戏++</span><a href="/downloads/code/cpp/gluttonysnake.cpp">view raw</a></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/******************************************************************</span></div><div class="line">		贪食蛇 Preview</div><div class="line">		此版本贪吃蛇用蛇的方块是集合用的是数组</div><div class="line">		蛇移动是以Sleep()阻断进程实现的</div><div class="line">		故蛇移动看似较为卡顿，且数组插入数据效率较低，</div><div class="line">		故操作体验十分一般</div><div class="line">*******************************************************************/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;windows.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"winmm.lib"</span>)</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> LENGTH 40					<span class="comment">//游戏场地的宽</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WIDTH 10					<span class="comment">//组成蛇的的正方形的边长</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> RANGE 50					<span class="comment">//游戏场地与客户去之间间隔</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SNAKE_COLOR RGB(255,0,0)	  <span class="comment">//蛇的颜色</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> BK_COLOR	RGB(204,232,207)  <span class="comment">//窗体背景色</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> NO_SNAKE 0</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> HAS_SNAKE 1</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> STEP 2</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAKECOOR(x) (x)*WIDTH		<span class="comment">//把flags数组的下标映射为坐标</span></span></div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></div><div class="line">{</div><div class="line">	<span class="keyword">int</span> x;</div><div class="line">	<span class="keyword">int</span> y;</div><div class="line">	<span class="keyword">int</span> flag;</div><div class="line">} GRID;<span class="comment">//蛇的结构</span></div><div class="line"></div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WndProc</span><span class="params">(HWND,UINT,WPARAM,LPARAM)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakePartSnake</span><span class="params">(<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">int</span>,GRID *)</span></span>;	<span class="comment">//为蛇身增加或设置一个方块</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MoveSnake</span><span class="params">(HWND)</span></span>;				<span class="comment">//移动蛇</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakeFood</span><span class="params">(GRID *food)</span></span>;			<span class="comment">//制造随机方块</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">initializer</span><span class="params">()</span></span>;				<span class="comment">//初始化游戏</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Manager</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">TCHAR szAppName[] = TEXT(<span class="string">"Gluttony Snake"</span>);</div><div class="line"><span class="keyword">int</span> flags[LENGTH][LENGTH];	<span class="comment">//游戏区域所有方块的状态标记</span></div><div class="line">RECT playground;		<span class="comment">//游戏场地</span></div><div class="line">GRID *snake = <span class="literal">NULL</span>;	<span class="comment">//蛇所在位置数组</span></div><div class="line">GRID *food = <span class="literal">NULL</span>;	<span class="comment">//食物对象</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> MAX_LENGTH = <span class="number">0</span>;<span class="comment">//默认蛇分配的最大长度（可变的）</span></div><div class="line"><span class="keyword">int</span> snake_len = <span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> direct = <span class="number">0</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">WinMain</span><span class="params">(HINSTANCE hInstance,</span></span></div><div class="line">				   HINSTANCE hPrevInstance,</div><div class="line">				   PSTR szCmdLine,</div><div class="line">				   <span class="keyword">int</span> iCmdShow)</div><div class="line">{</div><div class="line">	MSG msg;</div><div class="line">	HWND hwnd;</div><div class="line">	WNDCLASS wndclass;</div><div class="line">	<span class="keyword">while</span>(TRUE)</div><div class="line">	{</div><div class="line">		wndclass.cbClsExtra = <span class="number">0</span>;</div><div class="line">		wndclass.cbWndExtra = <span class="number">0</span>;</div><div class="line">		wndclass.hbrBackground=CreateSolidBrush(RGB(<span class="number">203</span>,<span class="number">202</span>,<span class="number">201</span>));</div><div class="line">		wndclass.hIcon = LoadIcon(<span class="literal">NULL</span>,IDI_APPLICATION);</div><div class="line">		wndclass.hCursor = LoadCursor(<span class="literal">NULL</span>,IDC_ARROW);</div><div class="line">		wndclass.hInstance = hInstance;</div><div class="line">		wndclass.lpfnWndProc = WndProc;</div><div class="line">		wndclass.lpszMenuName = <span class="literal">NULL</span>;</div><div class="line">		wndclass.lpszClassName = szAppName;</div><div class="line">		wndclass.style = CS_VREDRAW | CS_HREDRAW;</div><div class="line">		</div><div class="line">		<span class="keyword">if</span>(!RegisterClass(&amp;wndclass))</div><div class="line">		{</div><div class="line">			MessageBox(<span class="literal">NULL</span>,TEXT(<span class="string">"Register class failed!! Retry??"</span>),szAppName,<span class="number">0</span>);</div><div class="line">			<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">		}</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	}</div><div class="line">	hwnd = CreateWindow(szAppName,</div><div class="line">			TEXT(<span class="string">"Gluttony Snake Preview V1.0.1"</span>),</div><div class="line">			WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME ^ WS_MINIMIZEBOX ^ WS_MAXIMIZEBOX,</div><div class="line">			CW_USEDEFAULT,</div><div class="line">			CW_USEDEFAULT,</div><div class="line">			CW_USEDEFAULT,</div><div class="line">			CW_USEDEFAULT,</div><div class="line">			<span class="literal">NULL</span>,<span class="literal">NULL</span>,</div><div class="line">			hInstance,</div><div class="line">			<span class="literal">NULL</span>);</div><div class="line"></div><div class="line">	ShowWindow(hwnd,SW_NORMAL);</div><div class="line">	UpdateWindow(hwnd);</div><div class="line">	<span class="keyword">while</span>(TRUE)</div><div class="line">	{</div><div class="line">		<span class="keyword">if</span>(PeekMessage(&amp;msg,<span class="literal">NULL</span>,<span class="number">0</span>,<span class="number">0</span>,PM_REMOVE))</div><div class="line">		{</div><div class="line">			<span class="keyword">if</span>(msg.message == WM_QUIT)</div><div class="line">				<span class="keyword">break</span>;</div><div class="line">			TranslateMessage(&amp;msg);</div><div class="line">			DispatchMessage(&amp;msg);</div><div class="line">		}</div><div class="line">		<span class="keyword">else</span></div><div class="line">		{</div><div class="line">			MoveSnake(hwnd);</div><div class="line">		}</div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> msg.wParam;</div><div class="line">}</div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WndProc</span><span class="params">(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam)</span></span></div><div class="line">{</div><div class="line">	HDC hdc;</div><div class="line">	PAINTSTRUCT ps;</div><div class="line">	HBRUSH hBrush;</div><div class="line">	<span class="keyword">switch</span>(message)</div><div class="line">	{</div><div class="line">	<span class="keyword">case</span> WM_DESTROY:</div><div class="line">		PostQuitMessage(<span class="number">0</span>);</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="keyword">case</span> WM_CREATE:</div><div class="line">		<span class="comment">//PlaySound(TEXT("HG.wav"),NULL ,SND_ASYNC | SND_LOOP);//播放游戏音乐；</span></div><div class="line">		initializer();</div><div class="line">			MoveWindow(hwnd,</div><div class="line">			RANGE * <span class="number">2</span>,</div><div class="line">			RANGE * <span class="number">2</span>,</div><div class="line">			WIDTH * LENGTH + RANGE * <span class="number">3</span>,</div><div class="line">			WIDTH * LENGTH + RANGE * <span class="number">3</span>,</div><div class="line">			TRUE);</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	<span class="keyword">case</span> WM_KEYDOWN:</div><div class="line">		<span class="keyword">switch</span>(wParam)</div><div class="line">		{</div><div class="line">		<span class="keyword">case</span> VK_LEFT:</div><div class="line">			<span class="keyword">if</span>(direct != VK_RIGHT)</div><div class="line">				direct = VK_LEFT;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> VK_RIGHT:</div><div class="line">			<span class="keyword">if</span>(direct != VK_LEFT)</div><div class="line">				direct = VK_RIGHT;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> VK_UP:</div><div class="line">			<span class="keyword">if</span>(direct != VK_DOWN)</div><div class="line">				direct = VK_UP;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">case</span> VK_DOWN:</div><div class="line">			<span class="keyword">if</span>(direct != VK_UP)</div><div class="line">				direct = VK_DOWN;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="keyword">default</span>:</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		}</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="keyword">case</span> WM_PAINT:</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != snake_len; ++i)</div><div class="line">		{</div><div class="line">			flags[(snake + i)-&gt;x][(snake + i)-&gt;y] = (snake + i)-&gt;flag;</div><div class="line">		}</div><div class="line">		hdc = BeginPaint(hwnd,&amp;ps);</div><div class="line">		SetViewportOrgEx(hdc,RANGE/<span class="number">2</span>,RANGE,<span class="literal">NULL</span>);</div><div class="line">		hBrush = CreateSolidBrush(BK_COLOR);</div><div class="line">		SelectObject(hdc,hBrush);</div><div class="line">		Rectangle(hdc,</div><div class="line">			playground.left,</div><div class="line">			playground.top,</div><div class="line">			playground.right,</div><div class="line">			playground.bottom);</div><div class="line">		DeleteObject(hBrush);</div><div class="line">		hBrush = CreateSolidBrush(SNAKE_COLOR);</div><div class="line">		SelectObject(hdc,hBrush);</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != LENGTH;++i)</div><div class="line">		{</div><div class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j != LENGTH;++j)</div><div class="line">			{</div><div class="line">				<span class="keyword">if</span>(flags[i][j] == HAS_SNAKE)</div><div class="line">				{</div><div class="line">					Rectangle(hdc,</div><div class="line">						MAKECOOR(i),</div><div class="line">						MAKECOOR(j),</div><div class="line">						MAKECOOR(i+<span class="number">1</span>),</div><div class="line">						MAKECOOR(j+<span class="number">1</span>));</div><div class="line">				}</div><div class="line">			}</div><div class="line">		}</div><div class="line">		DeleteObject(hBrush);</div><div class="line">		EndPaint(hwnd,&amp;ps);</div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> DefWindowProc(hwnd,message,wParam,lParam);</div><div class="line">}</div><div class="line"><span class="comment">//初始化游戏各个参数</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">initializer</span><span class="params">()</span></span></div><div class="line">{</div><div class="line">	<span class="keyword">if</span>(snake != <span class="literal">NULL</span>)</div><div class="line">		<span class="built_in">free</span>(snake);</div><div class="line">	<span class="keyword">if</span>(food != <span class="literal">NULL</span>)</div><div class="line">		<span class="built_in">free</span>(food);</div><div class="line">	snake_len = <span class="number">3</span>;		<span class="comment">//蛇的初始长度为3</span></div><div class="line">	direct = VK_RIGHT;	<span class="comment">//蛇的初始方向为向右</span></div><div class="line">	MAX_LENGTH = <span class="number">100</span>;	<span class="comment">//蛇默认最初分配最大长度为20</span></div><div class="line">	food = (GRID *)<span class="built_in">calloc</span>(<span class="number">1</span>,<span class="keyword">sizeof</span>(GRID));<span class="comment">//分配储存food的内存</span></div><div class="line">	snake = (GRID *)<span class="built_in">calloc</span>(MAX_LENGTH,<span class="keyword">sizeof</span>(GRID));<span class="comment">//分配储存蛇的内存</span></div><div class="line">	<span class="comment">/*************初始化游戏场地*******************/</span></div><div class="line">	playground.left = <span class="number">0</span>;</div><div class="line">	playground.top = <span class="number">0</span>;</div><div class="line">	playground.right = WIDTH * LENGTH;</div><div class="line">	playground.bottom = WIDTH * LENGTH;</div><div class="line">	<span class="comment">/**************初始化游戏场地********************/</span></div><div class="line"></div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ;i &lt; LENGTH;++i)</div><div class="line">	{</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; LENGTH;++j)</div><div class="line">		{</div><div class="line">			flags[i][j] = NO_SNAKE;</div><div class="line">		}</div><div class="line">	}</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != snake_len;++i)</div><div class="line">	{</div><div class="line">		MakePartSnake(LENGTH / <span class="number">2</span> + <span class="number">2</span> - i,LENGTH / <span class="number">2</span>,HAS_SNAKE,(snake + i));</div><div class="line">	}<span class="comment">///初始化蛇</span></div><div class="line">	MakeFood(food);<span class="comment">///产生food</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakePartSnake</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> flag,GRID * snake)</span></span></div><div class="line">{</div><div class="line">	snake-&gt;x = x;</div><div class="line">	snake-&gt;y = y;</div><div class="line">	snake-&gt;flag = flag;</div><div class="line">}</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//控制蛇的移动</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MoveSnake</span><span class="params">(HWND hwnd)</span></span></div><div class="line">{</div><div class="line">	Manager();</div><div class="line">	<span class="comment">//把蛇的尾部去除（表现为蛇移动一格）</span></div><div class="line">	flags[(snake + snake_len - <span class="number">1</span>)-&gt;x][(snake + snake_len - <span class="number">1</span>)-&gt;y] = NO_SNAKE;</div><div class="line"></div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = snake_len - <span class="number">1</span>; i &gt; <span class="number">0</span>;--i)</div><div class="line">	{</div><div class="line">		(snake+i)-&gt;x = (snake + i <span class="number">-1</span>)-&gt;x;</div><div class="line">		(snake+i)-&gt;y = (snake + i <span class="number">-1</span>)-&gt;y;</div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(direct == VK_LEFT)</div><div class="line">	{</div><div class="line">		snake-&gt;x -= <span class="number">1</span>;</div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(direct == VK_RIGHT)</div><div class="line">	{</div><div class="line">		snake-&gt;x += <span class="number">1</span>;</div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(direct == VK_UP)</div><div class="line">	{</div><div class="line">		snake-&gt;y -= <span class="number">1</span>;</div><div class="line">	}</div><div class="line">	<span class="keyword">if</span>(direct == VK_DOWN)</div><div class="line">	{</div><div class="line">		snake-&gt;y += <span class="number">1</span>;</div><div class="line">	}</div><div class="line">	InvalidateRect(hwnd,<span class="literal">NULL</span>,FALSE);</div><div class="line">	Sleep(<span class="number">200</span>);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//通过随机生成food</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakeFood</span><span class="params">(GRID *food)</span></span></div><div class="line">{</div><div class="line">	srand((<span class="keyword">unsigned</span>) time(<span class="literal">NULL</span>));</div><div class="line">	food-&gt;x = rand() % LENGTH;</div><div class="line">	food-&gt;y = rand() % LENGTH;</div><div class="line">	food-&gt;flag = HAS_SNAKE;</div><div class="line">	flags[food-&gt;x][food-&gt;y] = food-&gt;flag;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//游戏规则的映射及内存的处理</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Manager</span><span class="params">()</span></span></div><div class="line">{</div><div class="line">	<span class="keyword">if</span>(snake_len &gt;= MAX_LENGTH - <span class="number">2</span>)</div><div class="line">	{</div><div class="line">		MAX_LENGTH += STEP;</div><div class="line">		snake = (GRID *)<span class="built_in">realloc</span>(snake,MAX_LENGTH * <span class="keyword">sizeof</span>(GRID));</div><div class="line">	}<span class="comment">//若蛇的长度数组snake将超过所分配的内存就再次扩充分配</span></div><div class="line"></div><div class="line">	<span class="keyword">if</span>(snake-&gt;x &lt; <span class="number">0</span> || snake-&gt;x &gt;= LENGTH || snake-&gt;y &lt; <span class="number">0</span> || snake-&gt;y &gt;= LENGTH)</div><div class="line">	{</div><div class="line">		MessageBox(<span class="literal">NULL</span>,TEXT(<span class="string">"Game Over!!"</span>),szAppName,<span class="number">0</span>);</div><div class="line">		initializer();</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	}<span class="comment">///判断蛇是否碰到边界</span></div><div class="line"></div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">4</span>;i &lt; snake_len;++i)</div><div class="line">	{</div><div class="line">		<span class="keyword">if</span>(snake-&gt;x == (snake + i)-&gt;x &amp;&amp; snake-&gt;y == (snake + i)-&gt;y)</div><div class="line">		{</div><div class="line">			MessageBox(<span class="literal">NULL</span>,TEXT(<span class="string">"Game Over!!"</span>),szAppName,<span class="number">0</span>);</div><div class="line">			initializer();</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		}</div><div class="line">	}<span class="comment">////判断蛇是否碰到自身</span></div><div class="line"></div><div class="line">	<span class="keyword">if</span>(food-&gt;x == snake-&gt;x &amp;&amp; food-&gt;y == snake-&gt;y)</div><div class="line">	{</div><div class="line">		MakePartSnake(</div><div class="line">					(snake + snake_len - <span class="number">1</span>)-&gt;x</div><div class="line">					,(snake + snake_len - <span class="number">1</span>)-&gt;y</div><div class="line">					,HAS_SNAKE</div><div class="line">					,snake + snake_len</div><div class="line">					);</div><div class="line">		++snake_len;</div><div class="line">		MakeFood(food);</div><div class="line">	}<span class="comment">///判断蛇是否吃到food</span></div><div class="line">}</div></pre></td></tr></table></figure><br>代码在VS2010下编译运行(<em>我使用的开发环境，VS其它版本也可以</em>)，可见游戏界面如下：<br><img src="/2016/07/14/win32-gluttony-snake/1-1.PNG" alt="贪食蛇游戏界面" title="贪食蛇游戏界面"><br>&ensp;<br>以上代码未考虑通关情况，也就是如果水平够高蛇会把格子占满，然后Game over。<br><strong>注:</strong> 若在编译时报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">error LNK2019: 无法解析的外部符号 _main，该符号在函数 ___tmainCRTStart</div></pre></td></tr></table></figure></p>
+<p>可按以下方法解决：</p>
+<ul>
+<li>右键点击–&gt;项目，选择–&gt;属性，属性页 窗口弹出；</li>
+<li>接着，点击连接器-&gt;系统，在右侧会看到“子系统”选项，将选项改为<strong>/subsystem:windows</strong>.</li>
+</ul>
+<p>最后附上Github项目地址：<em><a href="https://github.com/hulala1021/gluttonysnake" target="_blank" rel="external">gluttonysnake</a></em><br><div style="text-align:center">
+  <div class="github-card" data-user="hulala1021" data-repo="gluttonysnake" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+</p>
+<p>本文永久链接： <a href="http://doornote.net/2016/07/14/win32-gluttony-snake/">http://doornote.net/2016/07/14/win32-gluttony-snake/</a> ；欢迎转载。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C-C/" rel="tag">#C/C++</a>
+          
+            <a href="/tags/Win32Api/" rel="tag">#Win32Api</a>
+          
+            <a href="/tags/Windows程序设计/" rel="tag">#Windows程序设计</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/17/java-multithreading-1/" rel="prev" title="JAVA多线程编程——生产者消费者模式(1)">
+                JAVA多线程编程——生产者消费者模式(1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/14/win32-gluttony-snake/"
+           data-title="利用Win32Api实现的一个简单的贪食蛇游戏" data-url="http://doornote.net/2016/07/14/win32-gluttony-snake/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="崔伟" />
+          <p class="site-author-name" itemprop="name">崔伟</p>
+          <p class="site-description motion-element" itemprop="description">寻求简洁自然的编程方式。。。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hulala1021" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://steamcommunity.com/id/hulala1021/" target="_blank" title="Steam">
+                  
+                    <i class="fa fa-fw fa-steam-square"></i>
+                  
+                  Steam
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">崔伟</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hulala1021"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

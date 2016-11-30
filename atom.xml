@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>hulala1021&#39;s 博客</title>
+  <title>崔伟的个人博客</title>
   <subtitle>coder,steamer,sleeper....</subtitle>
   <link href="/atom.xml" rel="self"/>
   
@@ -9,7 +9,7 @@
   <id>http://doornote.net/</id>
   
   <author>
-    <name>hulala1021</name>
+    <name>崔伟</name>
     
   </author>
   
@@ -120,9 +120,9 @@
       <category term="C#" scheme="http://doornote.net/categories/C/"/>
     
     
-      <category term="生产力" scheme="http://doornote.net/tags/%E7%94%9F%E4%BA%A7%E5%8A%9B/"/>
-    
       <category term="C#" scheme="http://doornote.net/tags/C/"/>
+    
+      <category term="生产力" scheme="http://doornote.net/tags/%E7%94%9F%E4%BA%A7%E5%8A%9B/"/>
     
   </entry>
   
